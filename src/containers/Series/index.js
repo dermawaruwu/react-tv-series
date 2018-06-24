@@ -7,27 +7,39 @@ class Series extends Component {
         series: []
     }
 
-    componentDidMount(){
-        fetch('http://api.tvmaze.com/search/shows?q=Vikings')
-            .then((response) => response.json())
-            .then(json => this.setState({ series: json}))
-            
-            //.then(json => console.log(json))
+    
 
-            //.then((response) => {console.log(response)})
-        /* const series = ["Vikings", "Game of Thrones"];
+    onSeriesInputChange = e => {
 
-        setTimeout(() => {
-            this.setState({ series }); // same as this.setState({ series: series }); if it has same naem of "series"
-            
-        }, 2000) */
+        
+
+            fetch(`http://api.tvmaze.com/search/shows?q=${e.target.value}`)   // ' diganti menjadi ` 
+                .then((response) => response.json())
+                .then(json => this.setState({ series: json}))
+                
+                //.then(json => console.log(json))
+    
+                //.then((response) => {console.log(response)})
+            /* const series = ["Vikings", "Game of Thrones"];
+    
+            setTimeout(() => {
+                this.setState({ series }); // same as this.setState({ series: series }); if it has same naem of "series"
+                
+            }, 2000) */
+        
+
+
+        /* console.log(e);
+        console.log(e.target.value); */
     }
-
 
     render(){
         return (
             <div> 
                 The length of series array is {this.state.series.length} 
+                <div>
+                    <input type="text" onChange = {this.onSeriesInputChange} />
+                </div>
                 <SeriesList list={this.state.series}/>
             </div>
             
