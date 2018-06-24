@@ -8,6 +8,16 @@ class App extends Component {
     state = {
         series: []
     }
+
+    componentDidMount(){
+        const series = ["Vikings", "Game of Thrones"];
+
+        setTimeout(() => {
+            this.setState({ series }); // same as this.setState({ series: series }); if it has same naem of "series"
+            
+        }, 2000)
+    }
+
     render() {
         return (
         <div className="App">
