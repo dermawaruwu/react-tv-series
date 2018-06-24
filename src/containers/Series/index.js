@@ -4,43 +4,68 @@ import SeriesList from '../../components/SeriesList';
 class Series extends Component {
 
     state = {
-        series: []
+        series: [],
+        seriesName: '',
+        isFetching: false,
     }
 
     
 
     onSeriesInputChange = e => {
 
-        
+        this.setState({seriesName: e.target.value, isFetching: true});
 
-            fetch(`http://api.tvmaze.com/search/shows?q=${e.target.value}`)   // ' diganti menjadi ` 
-                .then((response) => response.json())
-                .then(json => this.setState({ series: json}))
-                
-                //.then(json => console.log(json))
+        fetch(`http://api.tvmaze.com/search/shows?q=${e.target.value}`)   // ' diganti menjadi ` 
+            .then((response) => response.json())
+            .then(json => this.setState({ series: json, isFetching: false}))
+            
+            //.then(json => console.log(json))
+
+            //.then((response) => {console.log(response)})
+        /* const series = ["Vikings", "Game of Thrones"];
+
+        setTimeout(() => {
+            this.setState({ series }); // same as this.setState({ series: series }); if it has same naem of "series"
+            
+        }, 2000) */
     
-                //.then((response) => {console.log(response)})
-            /* const series = ["Vikings", "Game of Thrones"];
-    
-            setTimeout(() => {
-                this.setState({ series }); // same as this.setState({ series: series }); if it has same naem of "series"
-                
-            }, 2000) */
-        
 
 
-        /* console.log(e);
-        console.log(e.target.value); */
+    /* console.log(e);
+    console.log(e.target.value); */
     }
 
     render(){
+
+        const { series, seriesName, isFetching } = this.state;
+
+
         return (
-            <div> 
-                The length of series array is {this.state.series.length} 
+            <div>
                 <div>
-                    <input type="text" onChange = {this.onSeriesInputChange} />
+                    <input 
+                        value={seriesName}
+                        type="text" 
+                        onChange = {this.onSeriesInputChange} 
+                    />
                 </div>
-                <SeriesList list={this.state.series}/>
+                { 
+                    series.length === 0 && seriesName.trim() === ''
+                    &&
+                    <p> Please enter series name into the input </p>
+                }
+                {
+                    series.length === 0 && seriesName.trim() !== ''
+                    &&
+                    <p>{seriesName} is not found</p>
+                }
+                {
+                    isFetching && <p>Loading ... </p>
+                }
+                {
+                    !isFetching && <SeriesList list={this.state.series}/>
+                }
+                
             </div>
             
         )
